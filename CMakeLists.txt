@@ -41,8 +41,9 @@ endif()
 set(LIBS ${LIBS} m)
 
 # Testing the grid
-add_executable(testGrid test/TestGrid.cpp)
+add_executable(testGrid src/Grid.cpp test/TestGrid.cpp)
 target_link_libraries(testGrid ${LIBS})
+add_test(testGrid testGrid)
 
 # Testing the parser
 # add_executable(testParser src/parser.cpp test/TestParser.cpp)

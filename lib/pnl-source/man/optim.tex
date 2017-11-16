@@ -1,0 +1,153 @@
+\section{Optimization}
+
+To use the functions described in this section, you should include \verb!pnl/pnl_optim.h!.
+
+\subsection{Linear constrained optimization (linear programming)}
+
+\subsubsection{Overview}
+
+Consider the minimization problem
+\begin{align*}
+  \min_x \quad & C^T \; x \\
+  \mbox{s.t.} \quad & 
+  A_{\text{ineq}} \; x \le B_{\text{ineq}}\\
+  &A_{\text{eq}} \; x = B_{\text{eq}}\\
+  & x_{\text{min}} \le x \le x_{\text{max}}
+\end{align*}
+
+\subsubsection{Functions}
+To solve such a linear problem, we provide a wrapper to the \emph{LPSolve} library
+(\url{http://lpsolve.sourceforge.net}).
+\begin{itemize}
+  \item \describefun{int}{pnl_optim_linprog}{const \PnlVect \ptr C, const \PnlMat \ptr A_ineq, const \PnlVect \ptr B_ineq, const \PnlMat \ptr A_eq, const \PnlVect \ptr B_eq, const \PnlVect \ptr x_min, const \PnlVect \ptr x_max, int debug, \PnlVect \ptr xopt, double \ptr fobj_opt}
+    \sshortdescribe This function has the following arguments:
+    \begin{itemize}
+      \item \var{C} The coefficients of the linear objective function.
+      \item \var{A_ineq} The l.h.s matrix of the inequality constraints. Can be NULL.
+      \item \var{B_ineq} The r.h.s vector of the inequality constraints. The lengh of
+        \var{B_ineq} must match the number of rows of \var{A_ineq}.
+      \item \var{A_eq} The l.h.s matrix of the equality constraints. Can be NULL.
+      \item \var{B_eq} The r.h.s vector of the equality constraints. The lengh of
+        \var{B_eq} must match the number of rows of \var{A_ineq}.
+      \item \var{x_min} The lower bound on \var{x}. If NULL, it means all the components
+        of \var{x} must be non negative.
+      \item \var{x_max} The upper bound on \var{x}. If NULL, it means \var{+Infinity} for
+        all the components.
+      \item \var{debug} TRUE or FALSE. If TRUE some debugging details are printed.
+      \item \var{xopt} The \var{argmin} of the problem.
+      \item \var{fobj_opt} The value of the obective funtion at the optimum \var{xopt}
+    \end{itemize}
+    The function returns \var{OK} or \var{FAIL}.
+
+  \item \describefun{int}{pnl_optim_linprog_sp}{const \PnlSpMat \ptr C, const \PnlSpMat \ptr A_ineq, const \PnlVect \ptr B_ineq, const \PnlSpMat \ptr A_eq, const \PnlVect \ptr B_eq, const \PnlVectInt \ptr index_min, const \PnlVect \ptr x_min, const \PnlVectInt \ptr index_max, const \PnlVect \ptr x_max, int debug, \PnlVect \ptr xopt, double \ptr fobj_opt}
+    \sshortdescribe This function has the following arguments:
+    \begin{itemize}
+      \item \var{C} The coefficients of the linear obejctive function, given as a sparse
+        matrix with a single column.
+      \item \var{A_ineq} The l.h.s matrix of the inequality constraints. Can be NULL.
+      \item \var{B_ineq} The r.h.s vector of the inequality constraints. The lengh of
+        \var{B_ineq} must match the number of rows of \var{A_ineq}.
+      \item \var{A_eq} The l.h.s matrix of the equality constraints. Can be NULL.
+      \item \var{B_eq} The r.h.s vector of the equality constraints. The lengh of
+        \var{B_eq} must match the number of rows of \var{A_ineq}.
+      \item \var{index_min} The indices of the variables with a lower bound constraint.
+        The corresponding lower bound is given in \var{x_min}
+      \item \var{x_min} The lower bound on \var{x}. If NULL, it means all the components
+        of \var{x} must be non negative. Can be NULL. For non specified variables, the
+        default lower bound is \var{0}.
+      \item \var{index_max} The indices of the variables with an upper bound constraint.
+        The corresponding lower bound is given in \var{x_max}. Can be NULL.
+      \item \var{x_max} The upper bound on \var{x}. If NULL, it means \var{+Infinity} for
+        all the components. For non specified variables, the
+        default upper bound is \var{+Infinity}..
+      \item \var{debug} TRUE or FALSE. If TRUE some debugging details are printed.
+      \item \var{xopt} The \var{argmin} of the problem.
+      \item \var{fobj_opt} The value of the obective funtion at the optimum \var{xopt}
+    \end{itemize}
+    The function returns \var{OK} or \var{FAIL}.
+\end{itemize}
+
+
+\subsection{Nonlinear constrained optimization}
+\subsubsection{Overview}
+
+A standard Constrained Nonlinear Optimization problem can be written as:
+
+\begin{equation*}
+  (O)\;
+  \left\{
+    \begin{tabular}{l}
+      $\displaystyle   \min \; f(x)$ \\
+      $\displaystyle c^I(x) \geq 0$ \\
+      $\displaystyle c^E(x) = 0$
+    \end{tabular}
+  \right.
+\end{equation*}
+
+where the function $f : \mathbb{R}^n \rightarrow  \mathbb{R}$ is the objective function, $c^I : \mathbb{R}^n \rightarrow  \mathbb{R}^{m_I} $ are the inequality constraints and $c^E : \mathbb{R}^n \rightarrow  \mathbb{R}^{m_E} $ are the equality constraints. These functions are supposed to be smooth.
+
+In general, the inequality constraints are of the form $c^I(x) = \left (g(x), \; x-l, \; u-x \right )$. The vector $l$ and $u$ are the lower and upper bounds on the variables $x$ and $g(x)$ and the non linear inequality constraints.
+
+Under some conditions, if $x \in \mathbb{R}^n$ is a solution of problem ($O$), then there exist a vector $\lambda=(\lambda^I,\lambda^E) \in \mathbb{R}^{m_I} \times \mathbb{R}^{m_E}$, such that the well known Karush-Kuhn-Tucker (KKT) optimality conditions are satisfied:
+
+\begin{equation*}
+  (P)\;
+  \left\{
+    \begin{tabular}{c}
+      $\nabla \ell(x,\lambda^I, \lambda^E) = \nabla f(x) - \nabla c^I(x) \lambda^I - \nabla c^E(x) \lambda^E= 0$ \\
+      $c^E(x) = 0 $ \\
+      $c^I(x) \geq 0 $ \\
+      $\lambda^I \geq 0 $\\
+      $c^I_i(x) \lambda^I_i =0, \; i=1...m_I$ \\
+    \end{tabular}
+  \right.
+\end{equation*}
+
+$l$ is known as the Lagrangian of the problem $(O)$, $\lambda^I$ and $\lambda^E$ as the dual variables while $x$ is the primal variable.
+
+\subsubsection{Functions}
+
+To solve an inequality constrained optimization problem, ie $m_E=0$, we provide the following function.
+\begin{itemize}
+\item \describefun{int}{pnl_optim_intpoints_bfgs_solve}{\refstruct{PnlRnFuncR}\ptr func, \refstruct{PnlRnFuncRm}\ptr grad_func, \refstruct{PnlRnFuncRm}\ptr nl_constraints, \PnlVect\ptr lower_bounds, \PnlVect\ptr upper_bounds, \PnlVect\ptr x_input, double tolerance, int iter_max, int print_inner_steps, \PnlVect\ptr output}
+  \sshortdescribe This function has the following arguments:
+
+  \begin{itemize}
+  \item \var{func} is the function to minimize $f$.
+  \item \var{grad} is the gradient of $f$. If this gradient is not available, then enter \var{grad}=NULL. In this case, finite difference will be used to estimate the gradient.
+  \item \var{nl_constraints} is the function $g(x)$, ie the non linear inequality constraints.
+  \item \var{lower_bounds} are the lower bounds on $x$. Can be NULL if there is no
+    lower bound.
+  \item \var{upper_bounds} are the upper bounds on $x$. Can be NULL if there is no
+    upper bound.
+  \item \var{x_input} is the initial point where the algorithm starts.
+  \item \var{tolerance} is the precision required in solving (P).
+  \item \var{iter_max} is the maximum number of iterations in the algorithm.
+  \item \var{print_algo_steps} is a flag to decide to print information.
+  \item \var{x_output} is the point where the algorithm stops.
+  \end{itemize}
+
+  The algorithm returns an $int$, its value depends on the output status of the algorithm. We have 4 cases:
+  \begin{itemize}
+  \item 0: Failure: Initial point is not strictly feasible.
+  \item 1: Step is too small, we stop the algorithm.
+  \item 2: Maximum number of iterations reached.
+  \item 3: A solution has been found up to the required accuracy.
+  \end{itemize}
+
+  The last case is equivalent to the two inequalities:
+
+  $$ || \nabla \ell(x,\lambda^I)||_{\infty} = ||\nabla f(x) - \nabla c^I(x) \lambda^I ||_{\infty} < \var{tolerance} $$
+  $$ || c^I(x) \lambda^I ||_{\infty} < \var{tolerance} $$
+
+  where $c^I(x) \: .* \: \lambda^I$ where '$.*$' denotes the term by term multiplication.
+
+  The first inequality is known as the optimality condition, the second one as the complementarity condition.\\
+
+  \textbf{Remarks} Our implementation requires the initial point $x_0$ to be strictly
+  feasible, ie: $c(x_0)>0$. The algorithm tries to find a pair ($x$, $\lambda$) solving
+  the Equations ($P$), but this does not guarantee that $x$ is a global minimum of $f$ on
+  the set $\{c(x)\geq0\}$.
+
+\end{itemize}
+

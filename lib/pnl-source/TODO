@@ -1,0 +1,13 @@
+
+- splines 
+    CMlib 
+    in scilab routines/callelm/somespline.f
+
+- Complex tridiag and band matrices
+    I am not sure these storages are so meaningful for complex data
+
+- interface dgesvd
+
+- Optim toolbox but it is GPL and not LPGL so I  have to recode
+  everything from the articles : tough work to come
+

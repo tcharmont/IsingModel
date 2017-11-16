@@ -5,14 +5,14 @@
 class Grid {
 
 public:
-Grid(int size);
-~Grid();
-int getSize();
-double getMagnetisation();
-PnlMat* getGrid();
-
+	Grid(int size);
+	~Grid();
+	int getSize();
+	double getMagnetisation();
+	PnlMat* getGrid();
+	
 private:
-int size;
-PnlMat *grid;
+	int size;
+	PnlMat *grid;
 
 };

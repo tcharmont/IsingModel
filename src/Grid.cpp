@@ -4,6 +4,10 @@ Grid::Grid(int size) : size(size) {
   this->grid = pnl_mat_create_from_zero(size,size);
 }
 
+Grid::~Grid() {
+	pnl_mat_free(&grid);
+}
+
 int Grid::getSize() {
   return size;
 }

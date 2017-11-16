@@ -5,19 +5,24 @@ using namespace std;
 
 int main() {
   
-  Grid *grid = new Grid(10);
+	Grid *grid = new Grid(10);
 
-  if (grid->getSize() == 10) {
-    cout << "True" << endl;
-  } else {
-    cout << "False" << endl;
-  }
+	bool success = true;
 
-  if (grid->getMagnetisation() == 0) {
-    cout << "True" << endl;
-  } else {
-    cout << "False" << endl;
-  }
+	if (grid->getSize() != 10) {
+		success = false;
+		cout << "Erreur sur la getSize()" << endl;
+	}
 
-  exit(0);
+	if (grid->getMagnetisation() != 0) {
+		success = false;
+		cout << "Erreur sur getMagnetisation()" << endl;
+	}
+
+	if (success) {
+		exit(0);
+	} else {
+		exit(1);
+	}
+
 }

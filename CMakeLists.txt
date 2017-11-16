@@ -45,20 +45,6 @@ add_executable(testGrid src/Grid.cpp test/TestGrid.cpp)
 target_link_libraries(testGrid ${LIBS})
 add_test(testGrid testGrid)
 
-# Testing the parser
-# add_executable(testParser src/parser.cpp test/TestParser.cpp)
-# target_link_libraries(testParser ${LIBS})
-
-# Test Option
-# add_executable(testOption test/TestOption.cpp src/BlackScholesModel.cpp src/MonteCarlo.cpp src/OptionAsian.cpp src/OptionBasket.cpp src/Option.cpp src/OptionPerformance.cpp src/OptionPerformance.hpp)
-# target_link_libraries(testOption ${LIBS})
-# add_test(testOption testOption)
-
-# add_executable(mc-pricer src/parser.cpp src/pricer.cpp)
-# target_link_libraries(mc-pricer ${LIBS})
-# install(TARGETS mc-pricer DESTINATION bin)
-
-
 # Print compiler flags
 get_directory_property(DirDefs COMPILE_DEFINITIONS)
 message(STATUS "COMPILE_DEFINITIONS = ${DirDefs}")

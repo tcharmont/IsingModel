@@ -1,18 +1,22 @@
 #pragma once
 
-#include "pnl/pnl_matrix.h"
+#include "Matrix.hpp"
 
 class Grid {
 
 public:
-	Grid(int size);
-	~Grid();
-	int getSize();
-	double getMagnetisation();
-	PnlMat* getGrid();
-	
+    Grid(int size);
+
+    ~Grid();
+
+    int getSize();
+
+    double getMagnetisation();
+
+    Matrix *getGrid();
+
 private:
-	int size;
-	PnlMat *grid;
+    int size;
+    Matrix *grid;
 
 };

@@ -2,8 +2,9 @@
 
 class MonteCarlo {
 public:
-  MonteCarlo();
-  ~MonteCarlo();
+    MonteCarlo();
+
+    ~MonteCarlo();
 
 private:
 

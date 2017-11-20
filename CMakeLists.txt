@@ -41,9 +41,14 @@ endif()
 set(LIBS ${LIBS} m)
 
 # Testing the grid
-add_executable(testGrid src/Grid.cpp test/TestGrid.cpp)
+add_executable(testGrid src/Grid.cpp test/TestGrid.cpp src/Matrix.cpp)
 target_link_libraries(testGrid ${LIBS})
 add_test(testGrid testGrid)
+
+# Testing the matrix
+add_executable(testMatrix test/TestMatrix.cpp src/Matrix.cpp)
+target_link_libraries(testMatrix ${LIBS})
+add_test(testMatrix testMatrix)
 
 # Print compiler flags
 get_directory_property(DirDefs COMPILE_DEFINITIONS)

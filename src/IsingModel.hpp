@@ -3,8 +3,9 @@
 class IsingModel {
 
 public:
-	IsingModel();
-	~IsingModel();
+    IsingModel();
+
+    ~IsingModel();
 
 private:
 

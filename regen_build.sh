@@ -2,8 +2,10 @@
 
 # Allow to regenerate the build file
 
-rm -r build
+if [ ! -d "build" ]; then
+    rm -r build
+fi
 mkdir build
 cd build
-cmake -DCMAKE_PREFIX_PATH=lib/pnl -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-std=c++11 -pg" ..
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-std=c++11 -pg" ..
 make

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <fstream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -11,13 +12,11 @@ public:
 
     Matrix();
 
-    Matrix(int n_rows, int n_columns);
-
-    Matrix(const int n_rows, const int n_columns, double init);
+    Matrix(const int n_rows, const int n_columns, const double init);
 
     ~Matrix();
 
-    //void display(std::ostream &str);
+    void display(std::ostream &str);
 
     int nb_rows() const;
 
@@ -25,11 +24,9 @@ public:
 
     void fillRandomly();
 
-    //double &operator()(const int &i, const int &j);
-
-    double &operator()(const int &i, const int &j) const;
-
-    double &GET(const Matrix &matrix, int i, int j);
+    double GET(int i, int j);
+	
+	const double GET(int i, int j) const;
 
     /*Matrix &operator+=(const double &);
 
@@ -51,8 +48,9 @@ public:
 
 private:
 
-    double **mat;
-    int n_rows;
-    int n_columns;
+    double *mat;
+	int n; // numbers of rows
+	int m; // numbers of columns
+	int nm; // numbers of rows * columns
 
 };

@@ -5,7 +5,7 @@
 class Grid {
 
 public:
-    Grid(int size);
+    Grid(int s);
 
     ~Grid();
 
@@ -13,10 +13,10 @@ public:
 
     double getMagnetisation();
 
-    Matrix *getGrid();
+    Matrix getGrid();
 
 private:
     int size;
-    Matrix *grid;
+    Matrix matrix;
 
 };

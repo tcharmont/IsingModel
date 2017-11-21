@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-project(PhysiqueNumerique CXX)
+project(IsingModel CXX)
 
 # Prefix
 if (NOT PREFIX)
@@ -28,14 +28,6 @@ set(Boost_NO_BOOST_CMAKE ON)
 find_package(Boost REQUIRED)
 include_directories(${Boost_INCLUDE_DIR})
 message(STATUS "Boost include directory ${Boost_INCLUDE_DIR}")
-
-# Detect PNL
-find_package(Pnl REQUIRED)
-set(LIBS ${LIBS} ${PNL_LIBRARIES})
-include_directories(${PNL_INCLUDE_DIRS})
-if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
-    add_definitions(-DPNL_RANGE_CHECK_OFF)
-endif()
 
 # Add math lib
 set(LIBS ${LIBS} m)

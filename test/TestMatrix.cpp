@@ -32,11 +32,8 @@ int main() {
         success = false;
         cout << "Erreur sur le remplissage" << endl;
     }
-    
-    Matrix matrix5 = Matrix(2,3,5);
-    Matrix matrix6 = Matrix(2,3,5);
 
-    if (!(matrix5 == matrix6)) {
+    if (!(*matrix == *matrix2)) {
 	    success = false;
 	    cout << "Erreur sur la comparaison de matrices" << endl;
     }

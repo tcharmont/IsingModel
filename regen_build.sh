@@ -2,7 +2,7 @@
 
 # Allow to regenerate the build file
 
-if [ ! -d "build" ]; then
+if [ -d "build/" ]; then
     rm -r build
 fi
 mkdir build

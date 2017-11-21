@@ -61,8 +61,6 @@ bool Matrix::operator==(const Matrix &matrix) {
     Matrix &mCurrent = *this;
     for (int i = 0; i < n; i++) {
 	    for (int j = 0; j < m; j++) {
-		    double a = mCurrent.GET(i,j);
-		    double b = matrix.GET(i,j);
 		    if (mCurrent.GET(i,j) != matrix.GET(i,j)) {
 			    return false;
 		    }

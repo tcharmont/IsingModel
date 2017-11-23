@@ -4,25 +4,30 @@
 using namespace std;
 
 int main() {
-  
-	Grid *grid = new Grid(10);
 
-	bool success = true;
+    Grid *grid = new Grid(10);
 
-	if (grid->getSize() != 10) {
-		success = false;
-		cout << "Erreur sur la getSize()" << endl;
-	}
+    bool success = true;
 
-	if (grid->getMagnetisation() != 0) {
-		success = false;
-		cout << "Erreur sur getMagnetisation()" << endl;
-	}
+    if (grid->getSize() != 10) {
+        success = false;
+        cerr << "Erreur sur la getSize()" << endl;
+    }
 
-	if (success) {
-		exit(0);
-	} else {
-		exit(1);
-	}
+    if (grid->getMagnetisation() != 0) {
+        success = false;
+        cerr << "Erreur sur getMagnetisation()" << endl;
+    }
+
+    if (abs((int) grid->getLocalEnergy(0, 0)) > 4) {
+        success = false;
+        cerr << "Erreur sur getLocalEnergy()" << endl;
+    }
+
+    if (success) {
+        exit(0);
+    } else {
+        exit(1);
+    }
 
 }

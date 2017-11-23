@@ -24,23 +24,13 @@ public:
 
     void fillRandomly();
 
-    double GET(int i, int j);
-	
-	const double GET(int i, int j) const;
+    double get(int i, int j);
 
-    /*Matrix &operator+=(const double &);
+    const double get(int i, int j) const;
 
-    Matrix &operator+=(const Matrix &);
+    void set(int i, int j, int scalar);
 
-    Matrix &operator-=(const double &);
-
-    Matrix &operator-=(const Matrix &);
-
-    Matrix &operator*=(const double &);
-
-    Matrix &operator/=(const double &);
-
-    Matrix &operator-();*/
+    void setAll(int scalar);
 
     Matrix &operator=(const Matrix &);
 
@@ -49,8 +39,8 @@ public:
 private:
 
     double *mat;
-	int n; // numbers of rows
-	int m; // numbers of columns
-	int nm; // numbers of rows * columns
+    int n; // numbers of rows
+    int m; // numbers of columns
+    int nm; // numbers of rows * columns
 
 };

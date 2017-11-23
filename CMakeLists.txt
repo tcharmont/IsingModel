@@ -42,6 +42,11 @@ add_executable(testMatrix test/TestMatrix.cpp src/Matrix.cpp)
 target_link_libraries(testMatrix ${LIBS})
 add_test(testMatrix testMatrix)
 
+# Testing the Ising model
+add_executable(testIsingModel test/TestIsingModel.cpp src/IsingModel.cpp src/Grid.cpp src/Matrix.cpp)
+target_link_libraries(testIsingModel ${LIBS})
+add_test(testIsingModel testIsingModel)
+
 # Print compiler flags
 get_directory_property(DirDefs COMPILE_DEFINITIONS)
 message(STATUS "COMPILE_DEFINITIONS = ${DirDefs}")

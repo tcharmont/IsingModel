@@ -38,6 +38,12 @@ int main() {
         cerr << "Erreur sur la comparaison de matrices" << endl;
     }
 
+    matrix->set(0,0,10);
+    if (matrix->get(0,0) != 10) {
+        success = false;
+        cerr << "Error on set one value" << endl;
+    }
+
     Matrix *matrix3 = new Matrix(2, 3, 2);
     matrix = matrix3;
     successTempo = true;

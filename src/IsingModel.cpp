@@ -1,6 +1,6 @@
 #include "IsingModel.hpp"
 #include <iostream>
-
+using namespace std;
 IsingModel::IsingModel(int s, double temperature) {
     size = s;
     if (temperature < 0) {
@@ -39,14 +39,22 @@ void IsingModel::simul(Grid *grid) {
             localEnergy = grid->getLocalEnergy(i, j);
             currentSpin = grid->getMatrix()->get(i, j);
             if (localEnergy < 0) {
+	      cout << "avant : " << currentSpin << endl;
                 tempoGrid->getMatrix()->set(i, j, -currentSpin);
+		//cout << "inversion energie négative" << endl;
+		cout << "apres : " << tempoGrid->getMatrix()->get(i,j) << endl;
             } else {
                 alea = distribution(generator);
                 if (alea < exp(localEnergy/(k*T))) {
                     tempoGrid->getMatrix()->set(i, j, -currentSpin);
+		    //cout << "inversion alea" << endl;
                 }
             }
         }
     }
-    grid = tempoGrid;
+    cout << "tempo : " << endl;
+    tempoGrid->getMatrix()->display(cout);
+    &grid = tempoGrid;
+    cout << "result : " << endl;
+    grid->getMatrix()->display(cout);
 }

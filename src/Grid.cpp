@@ -10,7 +10,15 @@ int Grid::getSize() {
     return size;
 }
 
+const int Grid::getSize() const {
+    return size;
+}
+
 Matrix *Grid::getMatrix() {
+    return matrix;
+}
+
+const Matrix *Grid::getMatrix() const {
     return matrix;
 }
 
@@ -49,4 +57,21 @@ double Grid::getLocalEnergy(int i, int j) {
 
     return energy;
 
+}
+
+Grid &Grid::operator=(const Grid &grid) {
+  this->matrix = grid.matrix;
+  size = grid.size;
+    return *this;
+}
+
+bool Grid::operator==(const Grid &grid) {
+    Grid &gCurrent = *this;
+    if (grid.getSize() != gCurrent.getSize()) {
+      return false;
+    }
+    if (grid.getMatrix() != gCurrent.getMatrix()) {
+      return false;
+    }
+    return true;
 }

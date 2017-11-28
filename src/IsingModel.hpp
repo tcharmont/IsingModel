@@ -35,7 +35,7 @@ public:
 private:
     int size; /// Size of the grid
     double T; /// Temperature
-    const double k = 1.38064852 * pow(10, -23); /// Boltzmann constant
+    const double k = 1; //1.38064852 * pow(10, -23); /// Boltzmann constant
     Grid tempoGrid; /// TempoGrid used to avoid multiple instances of grid
     random_device rd;
 

@@ -42,7 +42,7 @@ void IsingModel::simul(Grid &grid) {
                 //cout << "inversion energie négative" << endl;
             } else {
                 alea = distribution(generator);
-                if (alea < exp(localEnergy / (k * T))) {
+                if (alea < exp(- localEnergy / (k * T))) {
                     tempoGrid.getMatrix()->set(i, j, -currentSpin);
                     //cout << "inversion alea" << endl;
                 }
@@ -50,4 +50,10 @@ void IsingModel::simul(Grid &grid) {
         }
     }
     grid = tempoGrid;
+}
+
+void IsingModel::simul(Grid &grid, int n) {
+    for (int i = 0; i<n; i++) {
+        simul(grid);
+    }
 }

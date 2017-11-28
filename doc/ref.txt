@@ -1,1 +1,2 @@
 https://media4.obspm.fr/public/M2R/appliquettes/ising/doc/Ising_doc.html
+http://www.f-legrand.fr/scidoc/docimg/sciphys/physistat/ising2d/ising2d.html

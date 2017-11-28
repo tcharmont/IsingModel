@@ -60,18 +60,15 @@ double Grid::getLocalEnergy(int i, int j) {
 }
 
 Grid &Grid::operator=(const Grid &grid) {
-  this->matrix = grid.matrix;
-  size = grid.size;
+    this->matrix = grid.matrix;
+    size = grid.size;
     return *this;
 }
 
 bool Grid::operator==(const Grid &grid) {
     Grid &gCurrent = *this;
     if (grid.getSize() != gCurrent.getSize()) {
-      return false;
+        return false;
     }
-    if (grid.getMatrix() != gCurrent.getMatrix()) {
-      return false;
-    }
-    return true;
+    return gCurrent.getMatrix() == grid.getMatrix();
 }

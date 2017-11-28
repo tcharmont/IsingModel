@@ -38,8 +38,8 @@ int main() {
         cerr << "Erreur sur la comparaison de matrices" << endl;
     }
 
-    matrix->set(0,0,10);
-    if (matrix->get(0,0) != 10) {
+    matrix->set(0, 0, 10);
+    if (matrix->get(0, 0) != 10) {
         success = false;
         cerr << "Error on set one value" << endl;
     }

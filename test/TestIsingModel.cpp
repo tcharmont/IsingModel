@@ -7,7 +7,7 @@ int main() {
 
     int size = 10;
     double temperature = 2;
-    Grid *grid = new Grid(size);
+    Grid grid = Grid(size);
     IsingModel *isingModel = new IsingModel(size, temperature);
 
     bool success = true;
@@ -24,23 +24,21 @@ int main() {
         cerr << "Error with setTemperature()" << endl;
     }
 
-    grid->getMatrix()->fillRandomly();
+    grid.getMatrix()->fillRandomly();
 
-    Grid *beforeGrid = new Grid(size);
+    Grid beforeGrid = Grid(size);
     beforeGrid = grid;
 
     cout << "*** Before simulation ***" << endl;
-    grid->getMatrix()->display(cout);
-    cout << "Magnetisation : " << grid->getMagnetisation() << endl;
+    grid.getMatrix()->display(cout);
+    cout << "Magnetisation : " << grid.getMagnetisation() << endl;
 
     isingModel->simul(grid);
 
     cout << "*** After simulation ***" << endl;
 
-    grid->getMatrix()->display(cout);
-    cout << "Magnetisation : " << grid->getMagnetisation() << endl;
-
-    cout << "Matrice is equals : " << (beforeGrid == grid) << endl;
+    grid.getMatrix()->display(cout);
+    cout << "Magnetisation : " << grid.getMagnetisation() << endl;
 
     if (success) {
         exit(0);

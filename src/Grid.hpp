@@ -10,8 +10,8 @@ public:
     ~Grid();
 
     int getSize();
-  
-  const int getSize() const;
+
+    const int getSize() const;
 
     /**
      * Get the grid magnetisation
@@ -22,7 +22,7 @@ public:
 
     Matrix *getMatrix();
 
-  const Matrix *getMatrix() const;
+    const Matrix *getMatrix() const;
 
     void resetGrid();
 
@@ -35,9 +35,9 @@ public:
      */
     double getLocalEnergy(int i, int j);
 
-  Grid &operator=(const Grid &);
+    Grid &operator=(const Grid &);
 
-  bool operator==(const Grid &);
+    bool operator==(const Grid &);
 
 private:
     int size;

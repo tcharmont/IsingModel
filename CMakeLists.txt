@@ -47,6 +47,11 @@ add_executable(testIsingModel test/TestIsingModel.cpp src/IsingModel.cpp src/Gri
 target_link_libraries(testIsingModel ${LIBS})
 add_test(testIsingModel testIsingModel)
 
+# Testing Monte Carlo
+add_executable(testMonteCarlo test/TestMonteCarlo.cpp src/IsingModel.cpp src/Grid.cpp src/Matrix.cpp src/MonteCarlo.cpp)
+target_link_libraries(testMonteCarlo ${LIBS})
+add_test(testMonteCarlo testMonteCarlo)
+
 # Print compiler flags
 get_directory_property(DirDefs COMPILE_DEFINITIONS)
 message(STATUS "COMPILE_DEFINITIONS = ${DirDefs}")

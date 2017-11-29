@@ -14,7 +14,8 @@ void MonteCarlo::getMagnetisation(double &magnetisation, double &ic) {
     double squareSum = 0;
     double tempoMagnet = 0;
     for (int i = 0; i < nbSampleMC; i++) {
-        isingModel->simul(grid, nbSambleMP);
+        grid->getMatrix()->fillRandomly();
+        isingModel->simul(*grid, nbSambleMP);
         tempoMagnet = grid->getMagnetisation();
         sum += tempoMagnet;
         squareSum += pow(tempoMagnet, 2);

@@ -5,4 +5,6 @@ This project uses **Monte Carlo simulation** to show the famous physical phenome
 In addition, I use **variance reduction** to increase the precision of the simulation and I use **OpenMP** to increase the execution time.  
 
 To exect the project, you need to regenerate the build with ./regen_build.sh  
-To exect the test, go to /built and make check
+To exect the test, go to /built and make check  
+
+This project uses [lava/matplotlib-cpp](https://github.com/lava/matplotlib-cpp) to plot graphics. That is why, Python needs to be installed.

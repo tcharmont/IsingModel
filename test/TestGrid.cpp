@@ -1,4 +1,4 @@
-#include "../src/Grid.hpp"
+#include "../src/model/Grid.hpp"
 #include <iostream>
 
 using namespace std;

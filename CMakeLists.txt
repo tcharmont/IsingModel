@@ -33,24 +33,33 @@ message(STATUS "Boost include directory ${Boost_INCLUDE_DIR}")
 set(LIBS ${LIBS} m)
 
 # Testing the grid
-add_executable(testGrid src/Grid.cpp test/TestGrid.cpp src/Matrix.cpp)
+add_executable(testGrid src/model/Grid.cpp test/TestGrid.cpp src/model/Matrix.cpp)
 target_link_libraries(testGrid ${LIBS})
 add_test(testGrid testGrid)
 
 # Testing the matrix
-add_executable(testMatrix test/TestMatrix.cpp src/Matrix.cpp)
+add_executable(testMatrix test/TestMatrix.cpp src/model/Matrix.cpp)
 target_link_libraries(testMatrix ${LIBS})
 add_test(testMatrix testMatrix)
 
 # Testing the Ising model
-add_executable(testIsingModel test/TestIsingModel.cpp src/IsingModel.cpp src/Grid.cpp src/Matrix.cpp)
+add_executable(testIsingModel test/TestIsingModel.cpp src/model/IsingModel.cpp src/model/Grid.cpp src/model/Matrix.cpp)
 target_link_libraries(testIsingModel ${LIBS})
 add_test(testIsingModel testIsingModel)
 
 # Testing Monte Carlo
-add_executable(testMonteCarlo test/TestMonteCarlo.cpp src/IsingModel.cpp src/Grid.cpp src/Matrix.cpp src/MonteCarlo.cpp)
+add_executable(testMonteCarlo test/TestMonteCarlo.cpp src/model/IsingModel.cpp src/model/Grid.cpp src/model/Matrix.cpp src/model/MonteCarlo.cpp)
 target_link_libraries(testMonteCarlo ${LIBS})
 add_test(testMonteCarlo testMonteCarlo)
+
+# Testing view
+add_executable(testView src/interface/view.cpp src/interface/matplotlibcpp.hpp)
+target_link_libraries(testView ${LIBS})
+add_test(testView testView)
+
+# Main
+add_executable(main src/Main.cpp src/model/IsingModel.cpp src/model/Grid.cpp src/model/Matrix.cpp src/model/MonteCarlo.cpp)
+target_link_libraries(main ${LIBS})
 
 # Print compiler flags
 get_directory_property(DirDefs COMPILE_DEFINITIONS)

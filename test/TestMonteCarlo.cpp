@@ -1,4 +1,4 @@
-#include "../src/MonteCarlo.hpp"
+#include "../src/model/MonteCarlo.hpp"
 #include <iostream>
 
 using namespace std;

@@ -7,5 +7,5 @@ if [ -d "build/" ]; then
 fi
 mkdir build
 cd build
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-std=c++11 -pg" ..
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-std=c++11 -pg -I/usr/include/python2.7 -lpython2.7" ..
 make

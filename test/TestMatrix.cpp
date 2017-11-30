@@ -1,4 +1,4 @@
-#include "../src/Matrix.hpp"
+#include "../src/model/Matrix.hpp"
 #include <iostream>
 
 using namespace std;

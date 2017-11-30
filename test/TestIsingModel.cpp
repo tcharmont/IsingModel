@@ -1,4 +1,4 @@
-#include "../src/IsingModel.hpp"
+#include "../src/model/IsingModel.hpp"
 #include <iostream>
 
 using namespace std;

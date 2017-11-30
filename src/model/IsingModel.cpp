@@ -1,7 +1,4 @@
 #include "IsingModel.hpp"
-#include <iostream>
-
-using namespace std;
 
 IsingModel::IsingModel(int s, double temperature) : tempoGrid(Grid(s)) {
     size = s;
@@ -35,20 +32,25 @@ void IsingModel::simul(Grid &grid) {
     double localEnergy = 0;
     double currentSpin = 0;
     double alea = 0;
+    tempoGrid = grid;
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
             localEnergy = grid.getLocalEnergy(i, j);
             currentSpin = grid.getMatrix()->get(i, j);
+            //cout << currentSpin << endl;
             if (localEnergy < 0) {
                 tempoGrid.getMatrix()->set(i, j, -currentSpin);
                 //cout << "inversion energie négative" << endl;
             } else {
                 alea = distribution(generator);
+                //cout << "inversion alea : " << alea << " | compare to :" << exp(-localEnergy / (k * T)) << endl;
+                //tempoGrid.getMatrix()->set(i, j, currentSpin);
                 if (alea < exp(-localEnergy / (k * T))) {
                     tempoGrid.getMatrix()->set(i, j, -currentSpin);
                     //cout << "inversion alea" << endl;
                 }
             }
+            //cout << tempoGrid.getMatrix()->get(i,j) << endl;
         }
     }
     grid = tempoGrid;

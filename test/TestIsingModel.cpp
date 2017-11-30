@@ -33,10 +33,11 @@ int main() {
     grid.getMatrix()->display(cout);
     cout << "Magnetisation : " << grid.getMagnetisation() << endl;
 
-    isingModel->setTemperature(0);
-    for (int i = 0; i<100000; i++) {
+    isingModel->setTemperature(0.1);
+    for (int i = 0; i<1; i++) {
         isingModel->simul(grid);
     }
+    isingModel->simul(grid);
 
     cout << "*** After simulation ***" << endl;
 

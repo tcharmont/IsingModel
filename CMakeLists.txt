@@ -59,11 +59,6 @@ add_executable(testMonteCarlo test/TestMonteCarlo.cpp src/model/IsingModel.cpp s
 target_link_libraries(testMonteCarlo ${LIBS})
 add_test(testMonteCarlo testMonteCarlo)
 
-# Testing view
-add_executable(testView src/interface/view.cpp src/interface/matplotlibcpp.hpp)
-target_link_libraries(testView ${LIBS})
-add_test(testView testView)
-
 # Main
 add_executable(main src/Main.cpp src/model/IsingModel.cpp src/model/Grid.cpp src/model/Matrix.cpp src/model/MonteCarlo.cpp)
 target_link_libraries(main ${LIBS})

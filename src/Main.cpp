@@ -12,9 +12,9 @@ int main() {
     begin = omp_get_wtime();
 
     int nMC = 100;
-    int nMP = 100;
+    int nMP = 150;
     int size = 10;
-    double temperature = 0.0;
+    double temperature = 0.1;
     Grid *grid = new Grid(size);
     IsingModel *isingModel = new IsingModel(size, temperature);
     MonteCarlo *monteCarlo = new MonteCarlo(nMC, nMP, isingModel, grid);
@@ -22,39 +22,35 @@ int main() {
     double magnetisation = 0;
     double ic = 0;
 
-    int n = 100;
-    std::vector<double> x(n), y(n), icmin(n), icmax(n);
+    int n = 50;
+    //std::vector<double> x(n), y(n), icmin(n), icmax(n);
+    std::vector<double> x, y, icmin, icmax;
 //#pragma omp parallel for
     for (int i = 0; i < n; i++) {
         isingModel->setTemperature(i * 0.1);
         monteCarlo->getMagnetisation(magnetisation, ic);
-        x.at(i) = i * 0.1;
-        y.at(i) = magnetisation;
-        icmin.at(i) = magnetisation - ic;
-        icmax.at(i) = magnetisation + ic;
+        x.push_back(i * 0.1);
+        y.push_back(magnetisation);
+        icmin.push_back(magnetisation - ic);
+        icmax.push_back(magnetisation + ic);
+
+        plt::clf();
+        plt::plot(x, y);
+        plt::plot(x, icmin, "r--");
+        plt::plot(x, icmax, "r--");
+        plt::xlim(0, (int) (n * 0.1));
+        plt::xlabel("Temperature (K)");
+        plt::ylabel("Magnetisation");
+        plt::title("M = (T)");
+
+        plt::pause(0.01);
+
     }
 
-    // Plot line from given x and y data. Color is selected automatically.
-    plt::plot(x, y);
-    // Plot a red dashed line from given x and y data.
-    plt::plot(x, icmin, "r--");
-    // Plot a line whose name will show up as "log(x)" in the legend.
-    plt::plot(x, icmax, "r--");
-
-    // Set x-axis to interval [0,n]
-    plt::xlim(0, (int) (n * 0.1));
-
-    // Add graph title
-    plt::title("M = (T)");
-    // Enable legend.
-    //plt::legend();
-
     end = omp_get_wtime();
-    cout << "Time : " << end - begin << endl;
+    cout << "Real time : " << end - begin << " s" << endl;
 
-    // save figure
-    plt::save("./basic.png");
-    // show figure
+    plt::save("./view.png");
     plt::show();
 
 }

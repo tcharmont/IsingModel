@@ -30,6 +30,8 @@ void IsingModel::setTemperature(double temperature) {
 void IsingModel::simul(Grid &grid) {
     mt19937 generator(rd()); /// Mersenne Twister 19937 generator
     uniform_real_distribution<double> distribution(0.0, 1.0);
+    //boost::uniform_real<> uniformReal(0.0, 1.0);
+    //boost::variate_generator<RNGType, boost::uniform_real<> > dice(rng, uniformReal);
     double localEnergy = 0;
     double currentSpin = 0;
     double alea = 0;
@@ -42,7 +44,7 @@ void IsingModel::simul(Grid &grid) {
                 //cout << "inversion energie négative" << endl;
             } else {
                 alea = distribution(generator);
-                if (alea < exp(- localEnergy / (k * T))) {
+                if (alea < exp(-localEnergy / (k * T))) {
                     tempoGrid.getMatrix()->set(i, j, -currentSpin);
                     //cout << "inversion alea" << endl;
                 }
@@ -53,7 +55,7 @@ void IsingModel::simul(Grid &grid) {
 }
 
 void IsingModel::simul(Grid &grid, int n) {
-    for (int i = 0; i<n; i++) {
+    for (int i = 0; i < n; i++) {
         simul(grid);
     }
 }

@@ -36,6 +36,10 @@ if (OPENMP_FOUND)
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 endif()
 
+# Detect Python
+find_package(PythonLibs 2.7 REQUIRED)
+include_directories(${PYTHON_INCLUDE_DIRS})
+
 # Add math lib
 set(LIBS ${LIBS} m)
 
@@ -60,8 +64,8 @@ target_link_libraries(testMonteCarlo ${LIBS})
 add_test(testMonteCarlo testMonteCarlo)
 
 # Main
-add_executable(main src/Main.cpp src/model/IsingModel.cpp src/model/Grid.cpp src/model/Matrix.cpp src/model/MonteCarlo.cpp)
-target_link_libraries(main ${LIBS})
+add_executable(main src/Main.cpp src/model/IsingModel.cpp src/model/Grid.cpp src/model/Matrix.cpp src/model/MonteCarlo.cpp src/interface/matplotlibcpp.hpp)
+target_link_libraries(main ${LIBS} ${PYTHON_LIBRARIES})
 
 # Print compiler flags
 get_directory_property(DirDefs COMPILE_DEFINITIONS)

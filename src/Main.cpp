@@ -2,17 +2,17 @@
 #include "interface/matplotlibcpp.hpp"
 #include "model/MonteCarlo.hpp"
 #include "omp.h"
-
+#include <iostream>
 
 namespace plt = matplotlibcpp;
 
-int main() {
+int main(int argc, char *argv[]) {
 
     double begin, end;
     begin = omp_get_wtime();
 
-    int nMC = 200;
-    int nMP = 200;
+    int nMC = 50;
+    int nMP = 100;
     int size = 10;
     double temperature = 0.1;
     Grid *grid = new Grid(size);
@@ -23,20 +23,43 @@ int main() {
     double ic = 0;
 
     double temperatureMax = 5;
-    int nbStep = 40;
-    double temperatureStep = temperatureMax/nbStep;
-    //std::vector<double> x(n), y(n), icmin(n), icmax(n);
-    std::vector<double> x, y, icmin, icmax;
-//#pragma omp parallel for
-    for (int i = 1; i < nbStep; i++) {
-        isingModel->setTemperature(i * temperatureStep);
-        monteCarlo->getMagnetisation(magnetisation, ic);
-        x.push_back(i * temperatureStep);
-        y.push_back(magnetisation);
-        icmin.push_back(magnetisation - ic);
-        icmax.push_back(magnetisation + ic);
+    int nbStep = 20;
+    double temperatureStep = temperatureMax / nbStep;
 
-        plt::clf();
+    if (std::string(argv[1]) != "--parallel") {
+        std::vector<double> x, y, icmin, icmax;
+        for (int i = 1; i < nbStep; i++) {
+            isingModel->setTemperature(i * temperatureStep);
+            monteCarlo->getMagnetisation(magnetisation, ic);
+            x.push_back(i * temperatureStep);
+            y.push_back(magnetisation);
+            icmin.push_back(magnetisation - ic);
+            icmax.push_back(magnetisation + ic);
+
+            plt::clf();
+            plt::plot(x, y);
+            plt::plot(x, icmin, "r--");
+            plt::plot(x, icmax, "r--");
+            plt::xlim(0, (int) (temperatureMax));
+            plt::xlabel("Temperature (K)");
+            plt::ylabel("Magnetisation");
+            plt::title("M = (T, B)");
+
+            plt::pause(0.01);
+
+        }
+    } else {
+        std::vector<double> x(nbStep), y(nbStep), icmin(nbStep), icmax(nbStep);
+#pragma omp parallel for
+        for (int i = 0; i < nbStep; i++) {
+            isingModel->setTemperature((i + 1) * temperatureStep);
+            monteCarlo->getMagnetisation(magnetisation, ic);
+            x[i] = (i + 1) * temperatureStep;
+            y[i] = magnetisation;
+            icmin[i] = magnetisation - ic;
+            icmax[i] = magnetisation + ic;
+            cout << "itération: " << i+1 << " / " << nbStep << endl;
+        }
         plt::plot(x, y);
         plt::plot(x, icmin, "r--");
         plt::plot(x, icmax, "r--");
@@ -44,9 +67,6 @@ int main() {
         plt::xlabel("Temperature (K)");
         plt::ylabel("Magnetisation");
         plt::title("M = (T, B)");
-
-        plt::pause(0.01);
-
     }
 
     end = omp_get_wtime();

@@ -8,11 +8,19 @@ namespace plt = matplotlibcpp;
 
 int main(int argc, char *argv[]) {
 
+    /// Parse arguments
+    bool isParallel = false;
+    for (int i = 1; i < argc; i++) {
+        if (std::string(argv[i]) == "--parallel") {
+            isParallel = true;
+        }
+    }
+
     double begin, end;
     begin = omp_get_wtime();
 
-    int nMC = 50;
-    int nMP = 100;
+    int nMC = 200;
+    int nMP = 200;
     int size = 10;
     double temperature = 0.1;
     Grid *grid = new Grid(size);
@@ -23,10 +31,10 @@ int main(int argc, char *argv[]) {
     double ic = 0;
 
     double temperatureMax = 5;
-    int nbStep = 20;
+    int nbStep = 5;
     double temperatureStep = temperatureMax / nbStep;
 
-    if (std::string(argv[1]) != "--parallel") {
+    if (!isParallel) {
         std::vector<double> x, y, icmin, icmax;
         for (int i = 1; i < nbStep; i++) {
             isingModel->setTemperature(i * temperatureStep);
@@ -49,16 +57,20 @@ int main(int argc, char *argv[]) {
 
         }
     } else {
+        omp_set_num_threads(4);
         std::vector<double> x(nbStep), y(nbStep), icmin(nbStep), icmax(nbStep);
-#pragma omp parallel for
+#pragma omp parallel for shared(x, y, icmin, icmax)
         for (int i = 0; i < nbStep; i++) {
-            isingModel->setTemperature((i + 1) * temperatureStep);
-            monteCarlo->getMagnetisation(magnetisation, ic);
+            Grid gridParallel = Grid(size);
+            IsingModel *isingModelParallel = new IsingModel(size, temperature, 0);
+            MonteCarlo monteCarloParallel = MonteCarlo(nMC, nMP, isingModelParallel, grid);
+            isingModelParallel->setTemperature((i + 1) * temperatureStep);
+            monteCarloParallel.getMagnetisation(magnetisation, ic);
             x[i] = (i + 1) * temperatureStep;
             y[i] = magnetisation;
             icmin[i] = magnetisation - ic;
             icmax[i] = magnetisation + ic;
-            cout << "itération: " << i+1 << " / " << nbStep << endl;
+            cout << "iteration: " << i + 1 << " / " << nbStep << " num threads: " << omp_get_thread_num() << endl;
         }
         plt::plot(x, y);
         plt::plot(x, icmin, "r--");

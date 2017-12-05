@@ -20,6 +20,8 @@ public:
      */
     double getMagnetisation();
 
+    double getTotalSpin();
+
     Matrix *getMatrix();
 
     const Matrix *getMatrix() const;

@@ -38,6 +38,17 @@ double Grid::getMagnetisation() {
     return magnetisation;
 }
 
+double Grid::getTotalSpin() {
+    double totalSpin = 0;
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            totalSpin += matrix->get(i, j);
+
+        }
+    }
+    return totalSpin;
+}
+
 double Grid::getLocalEnergy(int i, int j) {
     double energy = 0;
     double spinIJ = matrix->get(i, j);
@@ -55,7 +66,7 @@ double Grid::getLocalEnergy(int i, int j) {
     currentSpin = matrix->get(i, (j - 1 + size) % size);
     energy += spinIJ * currentSpin;
 
-    return energy;
+    return 2*energy;
 
 }
 

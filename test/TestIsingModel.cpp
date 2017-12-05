@@ -8,7 +8,7 @@ int main() {
     int size = 10;
     double temperature = 2;
     Grid grid = Grid(size);
-    IsingModel *isingModel = new IsingModel(size, temperature);
+    IsingModel *isingModel = new IsingModel(size, temperature, 0);
 
     bool success = true;
 

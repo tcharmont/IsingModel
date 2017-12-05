@@ -1,7 +1,8 @@
 #include "IsingModel.hpp"
 
-IsingModel::IsingModel(int s, double temperature) : tempoGrid(Grid(s)) {
+IsingModel::IsingModel(int s, double temperature, double MagnetisationField) : tempoGrid(Grid(s)) {
     size = s;
+    B = MagnetisationField;
     if (temperature < 0) {
         std::cerr << "Invalid temperature" << std::endl;
         T = 0;
@@ -24,6 +25,14 @@ void IsingModel::setTemperature(double temperature) {
     }
 }
 
+double IsingModel::getMagnetisationField() {
+    return B;
+}
+
+void IsingModel::setMagnetisationField(double magnetisationfield) {
+    B = magnetisationfield;
+}
+
 void IsingModel::simul(Grid &grid) {
     mt19937 generator(rd()); /// Mersenne Twister 19937 generator
     uniform_real_distribution<double> distribution(0.0, 1.0);
@@ -35,7 +44,7 @@ void IsingModel::simul(Grid &grid) {
     tempoGrid = grid;
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
-            localEnergy = grid.getLocalEnergy(i, j);
+            localEnergy = grid.getLocalEnergy(i, j) - grid.getTotalSpin() * B;
             currentSpin = grid.getMatrix()->get(i, j);
             //cout << currentSpin << endl;
             if (localEnergy < 0) {

@@ -12,13 +12,17 @@ using namespace std;
 class IsingModel {
 
 public:
-    IsingModel(int s, double temperature);
+    IsingModel(int s, double temperature, double MagnetisationField);
 
     ~IsingModel();
 
     double getTemperature();
 
     void setTemperature(double temperature);
+
+    double getMagnetisationField();
+
+    void setMagnetisationField(double magnetisationfield);
 
     /**
      * Simul one iteration and save modification on the grid
@@ -38,6 +42,7 @@ public:
 private:
     int size; /// Size of the grid
     double T; /// Temperature
+    double B; /// Magnetisation field
     const double k = 1; //1.38064852 * pow(10, -23); /// Boltzmann constant
     Grid tempoGrid; /// TempoGrid used to avoid multiple instances of grid
     random_device rd;

@@ -1,5 +1,4 @@
 #include "MonteCarlo.hpp"
-#include "omp.h"
 
 MonteCarlo::MonteCarlo(int nMC, int nMP, IsingModel *model, Grid *g) {
     nbSampleMC = nMC;
@@ -14,7 +13,6 @@ void MonteCarlo::getMagnetisation(double &magnetisation, double &ic) {
     double sum = 0;
     double squareSum = 0;
     double tempoMagnet = 0;
-//#pragma omp parallel for reduction(+ : sum, squareSum) private(tempoMagnet)
     for (int i = 0; i < nbSampleMC; i++) {
         grid->getMatrix()->setAll(1);
         isingModel->simul(*grid, nbSambleMP);

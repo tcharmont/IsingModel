@@ -19,8 +19,8 @@ int main(int argc, char *argv[]) {
     double begin, end;
     begin = omp_get_wtime();
 
-    int nMC = 200;
-    int nMP = 200;
+    int nMC = 50;
+    int nMP = 100;
     int size = 10;
     double temperature = 0.1;
     Grid *grid = new Grid(size);
@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
     double ic = 0;
 
     double temperatureMax = 5;
-    int nbStep = 5;
+    int nbStep = 16;
     double temperatureStep = temperatureMax / nbStep;
 
     if (!isParallel) {
@@ -58,19 +58,25 @@ int main(int argc, char *argv[]) {
         }
     } else {
         omp_set_num_threads(4);
-        std::vector<double> x(nbStep), y(nbStep), icmin(nbStep), icmax(nbStep);
-#pragma omp parallel for shared(x, y, icmin, icmax)
-        for (int i = 0; i < nbStep; i++) {
+        std::vector<double> x(nbStep);
+        std::vector<double> y(nbStep);
+        std::vector<double> icmin(nbStep);
+        std::vector<double> icmax(nbStep);
+#pragma omp parallel
+        {
             Grid gridParallel = Grid(size);
             IsingModel *isingModelParallel = new IsingModel(size, temperature, 0);
-            MonteCarlo monteCarloParallel = MonteCarlo(nMC, nMP, isingModelParallel, grid);
-            isingModelParallel->setTemperature((i + 1) * temperatureStep);
-            monteCarloParallel.getMagnetisation(magnetisation, ic);
-            x[i] = (i + 1) * temperatureStep;
-            y[i] = magnetisation;
-            icmin[i] = magnetisation - ic;
-            icmax[i] = magnetisation + ic;
-            cout << "iteration: " << i + 1 << " / " << nbStep << " num threads: " << omp_get_thread_num() << endl;
+            MonteCarlo monteCarloParallel = MonteCarlo(nMC, nMP, isingModelParallel, &gridParallel);
+#pragma omp for private (magnetisation, ic)
+            for (int i = 0; i < nbStep; i++) {
+                isingModelParallel->setTemperature((i + 1) * temperatureStep);
+                monteCarloParallel.getMagnetisation(magnetisation, ic);
+                x[i] = (i + 1) * temperatureStep;
+                y[i] = magnetisation;
+                icmin[i] = magnetisation - ic;
+                icmax[i] = magnetisation + ic;
+                cout << "iteration: " << i + 1 << " / " << nbStep << " num threads: " << omp_get_thread_num() << endl;
+            }
         }
         plt::plot(x, y);
         plt::plot(x, icmin, "r--");
@@ -80,7 +86,6 @@ int main(int argc, char *argv[]) {
         plt::ylabel("Magnetisation");
         plt::title("M = (T, B)");
     }
-
     end = omp_get_wtime();
     cout << "Real time : " << end - begin << " s" << endl;
 

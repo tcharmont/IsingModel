@@ -45,7 +45,7 @@ int main() {
     }
 
     Matrix *matrix3 = new Matrix(2, 3, 2);
-    matrix = matrix3;
+    *matrix = *matrix3;
     successTempo = true;
     for (int i = 0; i < 2; i++) {
         for (int j = 0; j < 3; j++) {
@@ -54,14 +54,22 @@ int main() {
             }
         }
     }
+
     if (!successTempo) {
         success = false;
         cerr << "Erreur sur l'affectation" << endl;
     }
 
-    /*Matrix *matrix3 = new Matrix(5,10,5);
-    matrix3->fillRandomly();
-    matrix3->display(cout);*/
+    matrix3->set(0,0,1000);
+    if (matrix->get(0,0) == 1000) {
+        success = false;
+        cerr << "Erreur sur l'affectation (sur les pointeurs)" << endl;
+    }
+
+    /// Free the memory
+    delete(matrix);
+    delete(matrix2);
+    delete(matrix3);
 
     if (success) {
         exit(0);

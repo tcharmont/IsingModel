@@ -71,7 +71,7 @@ double Grid::getLocalEnergy(int i, int j) {
 }
 
 Grid &Grid::operator=(const Grid &grid) {
-    this->matrix = grid.matrix;
+    *(this->matrix) = *(grid.matrix);
     size = grid.size;
     return *this;
 }
@@ -82,4 +82,13 @@ bool Grid::operator==(const Grid &grid) {
         return false;
     }
     return gCurrent.getMatrix() == grid.getMatrix();
+}
+
+bool Grid::operator!=(const Grid &grid) {
+    Grid &gCurrent = *this;
+    if (grid.getSize() == gCurrent.getSize()) {
+
+        return *(gCurrent.getMatrix()) != *(grid.getMatrix());
+    }
+    return true;
 }

@@ -28,13 +28,15 @@ public:
 
     const double get(int i, int j) const;
 
-    void set(int i, int j, int scalar);
+    void set(int i, int j, double scalar);
 
     void setAll(int scalar);
 
     Matrix &operator=(const Matrix &);
 
     bool operator==(const Matrix &);
+
+    bool operator!=(const Matrix &);
 
 private:
 
@@ -44,3 +46,5 @@ private:
     int nm; // numbers of rows * columns
 
 };
+
+std::ostream &operator<<(std::ostream &out, const Matrix &m);

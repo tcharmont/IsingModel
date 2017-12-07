@@ -52,7 +52,7 @@ const double Matrix::get(int i, int j) const {
     return this->mat[i * n + j];
 }
 
-void Matrix::set(int i, int j, int scalar) {
+void Matrix::set(int i, int j, double scalar) {
     this->mat[i * n + j] = scalar;
 }
 
@@ -63,6 +63,11 @@ void Matrix::setAll(int scalar) {
 }
 
 Matrix &Matrix::operator=(const Matrix &matrix) {
+    /*for (int i = 0; i <nb_rows(); i++) {
+        for (int j = 0; j < nb_columns(); j++) {
+            this->set(i,j,matrix.get(i,j));
+        }
+    }*/
     memcpy(mat, matrix.mat, nm * sizeof(double));
     return *this;
 }
@@ -77,4 +82,21 @@ bool Matrix::operator==(const Matrix &matrix) {
         }
     }
     return true;
+}
+
+bool Matrix::operator!=(const Matrix &matrix) {
+    return !(*this != matrix);
+}
+
+std::ostream &operator<<(std::ostream &out, const Matrix &mat) {
+    int n = mat.nb_rows();
+    int m = mat.nb_columns();
+    out << "Size (" << n << " * " << m << ")" << std::endl;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            out << mat.get(i, j) << " ";
+        }
+        out << std::endl;
+    }
+    return out;
 }

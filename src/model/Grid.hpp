@@ -41,6 +41,8 @@ public:
 
     bool operator==(const Grid &);
 
+    bool operator!=(const Grid &);
+
 private:
     int size;
     Matrix *matrix;

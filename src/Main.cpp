@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
     double ic = 0;
 
     double temperatureMax = 5;
-    int nbStep = 16;
+    int nbStep = 15;
     double temperatureStep = temperatureMax / nbStep;
 
     if (!isParallel) {

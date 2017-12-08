@@ -92,3 +92,8 @@ bool Grid::operator!=(const Grid &grid) {
     }
     return true;
 }
+
+std::ostream &operator<<(std::ostream &out, const Grid &g) {
+  out << *(g.getMatrix());
+    return out;
+}

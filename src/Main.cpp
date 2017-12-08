@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
     double begin, end;
     begin = omp_get_wtime();
 
-    int nMC = 50;
+    int nMC = 100;
     int nMP = 100;
     int size = 10;
     double temperature = 0.1;
@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
     double ic = 0;
 
     double temperatureMax = 5;
-    int nbStep = 15;
+    int nbStep = 10;
     double temperatureStep = temperatureMax / nbStep;
 
     if (!isParallel) {

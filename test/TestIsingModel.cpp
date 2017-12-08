@@ -29,9 +29,9 @@ int main() {
     Grid beforeGrid = Grid(size);
     beforeGrid = grid;
 
-    cout << "*** Before simulation ***" << endl;
+    /*cout << "*** Before simulation ***" << endl;
     grid.getMatrix()->display(cout);
-    cout << "Magnetisation : " << grid.getMagnetisation() << endl;
+    cout << "Magnetisation : " << grid.getMagnetisation() << endl;*/
 
     isingModel->setTemperature(0.1);
     for (int i = 0; i<1; i++) {
@@ -39,10 +39,10 @@ int main() {
     }
     isingModel->simul(grid);
 
-    cout << "*** After simulation ***" << endl;
+    /*cout << "*** After simulation ***" << endl;
 
     grid.getMatrix()->display(cout);
-    cout << "Magnetisation : " << grid.getMagnetisation() << endl;
+    cout << "Magnetisation : " << grid.getMagnetisation() << endl;*/
 
     if (success) {
         exit(0);

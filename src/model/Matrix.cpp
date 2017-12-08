@@ -85,13 +85,13 @@ bool Matrix::operator==(const Matrix &matrix) {
 }
 
 bool Matrix::operator!=(const Matrix &matrix) {
-    return !(*this != matrix);
+    return !(*this == matrix);
 }
 
 std::ostream &operator<<(std::ostream &out, const Matrix &mat) {
     int n = mat.nb_rows();
     int m = mat.nb_columns();
-    out << "Size (" << n << " * " << m << ")" << std::endl;
+    out << "Size (" << n << " x " << m << ")" << std::endl;
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m; j++) {
             out << mat.get(i, j) << " ";

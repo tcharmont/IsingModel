@@ -48,3 +48,5 @@ private:
     Matrix *matrix;
 
 };
+
+std::ostream &operator<<(std::ostream &out, const Grid &g);

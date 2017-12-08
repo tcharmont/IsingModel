@@ -20,7 +20,7 @@ int main() {
 
     monteCarlo->getMagnetisation(magnetisation,ic);
 
-    cout << "magnesitation : " << magnetisation << ", ic : " << ic << endl;
+    //cout << "magnesitation : " << magnetisation << ", ic : " << ic << endl;
 
     if (success) {
         exit(0);

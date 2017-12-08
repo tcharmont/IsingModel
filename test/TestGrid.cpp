@@ -31,14 +31,17 @@ int main() {
 
     if (grid != grid2) {
         success = false;
-        cerr << "Error 1 on grid2 = grid1 (affectation)" << endl;
-    } else if (grid.getMatrix() != grid2.getMatrix()) {
+        cerr << "Error on grid2 = grid1 (grid affectation)" << endl;
+    } else if (*(grid.getMatrix()) != *(grid2.getMatrix())) {
         success = false;
-        cerr << "Error 2 on grid2 = grid1 (affectation)" << endl;
+        cerr << "Error on grid2 = grid1 (matrix affectation)" << endl;
     }
 
-    grid2.getMatrix()->set(0,0,1000);
-    cout << *(grid.getMatrix()) << endl;
+    grid2.getMatrix()->set(0,0,100);
+    if (grid.getMatrix()->get(0,0) == 100) {
+        success = false;
+        cerr << "Error on the pointer management" << endl;
+    }
 
     if (success) {
         exit(0);

@@ -36,8 +36,6 @@ void IsingModel::setMagnetisationField(double magnetisationfield) {
 void IsingModel::simul(Grid &grid) {
     mt19937 generator(rd()); /// Mersenne Twister 19937 generator
     uniform_real_distribution<double> distribution(0.0, 1.0);
-    //boost::uniform_real<> uniformReal(0.0, 1.0);
-    //boost::variate_generator<RNGType, boost::uniform_real<> > dice(rng, uniformReal);
     double localEnergy = 0;
     int currentSpin = 0;
     double alea = 0;

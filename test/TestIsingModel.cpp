@@ -8,7 +8,7 @@ int main() {
     int size = 10;
     double temperature = 2;
     Grid grid = Grid(size);
-    IsingModel *isingModel = new IsingModel(size, temperature, 0);
+    IsingModel *isingModel = new IsingModel(size, temperature, 0.5);
 
     bool success = true;
 
@@ -24,25 +24,37 @@ int main() {
         cerr << "Error with setTemperature()" << endl;
     }
 
-    grid.getMatrix()->fillRandomly();
+    if (isingModel->getMagnetisationField() != 0.5) {
+        success = false;
+        cerr << "Error with getMagnetisationField()" << endl;
+    }
 
-    Grid beforeGrid = Grid(size);
-    beforeGrid = grid;
+    isingModel->setMagnetisationField(0);
+    if (isingModel->getMagnetisationField() != 0) {
+        success = false;
+        cerr << "Error with setMagnetisationField()" << endl;
+    }
 
-    /*cout << "*** Before simulation ***" << endl;
-    grid.getMatrix()->display(cout);
-    cout << "Magnetisation : " << grid.getMagnetisation() << endl;*/
+    grid.getMatrix()->setAll(1);
 
     isingModel->setTemperature(0.1);
-    for (int i = 0; i<1; i++) {
+    for (int i = 0; i<200; i++) {
         isingModel->simul(grid);
     }
-    isingModel->simul(grid);
 
-    /*cout << "*** After simulation ***" << endl;
+    double magnetisation = grid.getMagnetisation();
+    if (magnetisation < 0.98) {
+      success = false;
+      cerr << "Error on the expected value (1) and current result: " << magnetisation << " with simul(grid)" << endl;
+    }
 
-    grid.getMatrix()->display(cout);
-    cout << "Magnetisation : " << grid.getMagnetisation() << endl;*/
+     grid.getMatrix()->setAll(1);
+     isingModel->simul(grid, 200);
+     magnetisation = grid.getMagnetisation();
+     if (magnetisation < 0.98) {
+       success = false;
+       cerr << "Error on the expected value (1) and current result: " << magnetisation <<" with simul(grid,n)" << endl;
+    }
 
     if (success) {
         exit(0);

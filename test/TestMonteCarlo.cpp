@@ -11,9 +11,8 @@ int main() {
     int nMP = 1000;
     int size = 10;
     double temperature = 0.0;
-    Grid *grid = new Grid(size);
     IsingModel *isingModel = new IsingModel(size, temperature, 0);
-    MonteCarlo *monteCarlo = new MonteCarlo(nMC,nMP, isingModel, grid);
+    MonteCarlo *monteCarlo = new MonteCarlo(nMC,nMP, isingModel, new Grid(size));
 
     double magnetisation = 0;
     double ic = 0;

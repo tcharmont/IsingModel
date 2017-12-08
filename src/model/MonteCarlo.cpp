@@ -7,7 +7,10 @@ MonteCarlo::MonteCarlo(int nMC, int nMP, IsingModel *model, Grid *g) {
     grid = g;
 }
 
-MonteCarlo::~MonteCarlo() {}
+MonteCarlo::~MonteCarlo() {
+  delete isingModel;
+  delete grid;
+}
 
 void MonteCarlo::getMagnetisation(double &magnetisation, double &ic) {
     double sum = 0;

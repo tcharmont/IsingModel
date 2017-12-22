@@ -20,18 +20,19 @@ int main(int argc, char *argv[]) {
     begin = omp_get_wtime();
 
     int nMC = 100;
-    int nMP = 100;
+    int nMP = 200;
     int size = 10;
     double temperature = 0.1;
+    double fieldB = 0;
     Grid *grid = new Grid(size);
-    IsingModel *isingModel = new IsingModel(size, temperature, 0);
+    IsingModel *isingModel = new IsingModel(size, temperature, fieldB);
     MonteCarlo *monteCarlo = new MonteCarlo(nMC, nMP, isingModel, grid);
 
     double magnetisation = 0;
     double ic = 0;
 
-    double temperatureMax = 5;
-    int nbStep = 10;
+    double temperatureMax = 3;
+    int nbStep = 30;
     double temperatureStep = temperatureMax / nbStep;
 
     if (!isParallel) {

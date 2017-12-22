@@ -19,9 +19,9 @@ int main() {
         cerr << "Error on getMagnetisation()" << endl;
     }
 
-    if (abs((int) grid.getLocalEnergy(0, 0)) > 4) {
+    if (abs((int) grid.getDeltaEnergy(0, 0)) > 4) {
         success = false;
-        cerr << "Error on getLocalEnergy()" << endl;
+        cerr << "Error on getDeltaEnergy()" << endl;
     }
 
     Grid grid2 = Grid(10);

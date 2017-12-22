@@ -35,7 +35,7 @@ public:
      * @param j Y position
      * @return The local energy
      */
-    double getLocalEnergy(int i, int j);
+    double getDeltaEnergy(int i, int j);
 
     Grid &operator=(const Grid &);
 

@@ -42,7 +42,7 @@ void IsingModel::simul(Grid &grid) {
     tempoGrid = grid;
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
-            localEnergy = grid.getLocalEnergy(i, j) - grid.getTotalSpin() * B;
+            localEnergy = grid.getDeltaEnergy(i, j);// - grid.getTotalSpin() * B;
             currentSpin = (int) grid.getMatrix()->get(i, j);
             if (localEnergy < 0) {
                 tempoGrid.getMatrix()->set(i, j, -currentSpin);

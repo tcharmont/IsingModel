@@ -14,13 +14,15 @@ public:
     const int getSize() const;
 
     /**
-     * Get the grid magnetisation
+     * @brief Get the grid magnetisation
      *
      * @return The grid magnetisation
      */
     double getMagnetisation();
 
     double getTotalSpin();
+
+    double getEnergy(double h);
 
     Matrix *getMatrix();
 
@@ -29,13 +31,13 @@ public:
     void resetGrid();
 
     /**
-     * Get the neighbours energy of the spin(i,j)
+     * @brief Get the neighbours energy of the spin(i,j)
      *
      * @param i X position
      * @param j Y position
      * @return The local energy
      */
-    double getDeltaEnergy(int i, int j);
+    double getDeltaEnergy(int i, int j, double h);
 
     Grid &operator=(const Grid &);
 

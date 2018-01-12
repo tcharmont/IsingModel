@@ -12,14 +12,12 @@ int main() {
     int size = 10;
     double temperature = 0.0;
     IsingModel *isingModel = new IsingModel(size, temperature, 0);
-    MonteCarlo *monteCarlo = new MonteCarlo(nMC,nMP, isingModel, new Grid(size));
+    MonteCarlo *monteCarlo = new MonteCarlo(nMC, nMP, isingModel, new Grid(size));
 
     double magnetisation = 0;
     double ic = 0;
 
-    monteCarlo->getMagnetisation(magnetisation,ic);
-
-    //cout << "magnesitation : " << magnetisation << ", ic : " << ic << endl;
+    monteCarlo->getMagnetisation(magnetisation, ic);
 
     if (success) {
         exit(0);

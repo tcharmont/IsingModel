@@ -1,96 +1,93 @@
 #include <cmath>
 #include "interface/matplotlibcpp.hpp"
 #include "model/MonteCarlo.hpp"
-#include "omp.h"
 #include <iostream>
 
 namespace plt = matplotlibcpp;
 
 int main(int argc, char *argv[]) {
 
+    /// Simulation parameters
+    int nMC = 150;
+    int nMP = 200;
+    int size = 10;
+
+    double temperatureMax = 7;
+    int nbStep = 30;
+    double temperatureStep = temperatureMax / nbStep;
+    double temperature = 0;
+    double fieldB = 0;
+
     /// Parse arguments
     bool isParallel = false;
+    bool plotEnergy = false;
+    bool plotMagnetisation = true;
+    bool runAppli = true;
+
     for (int i = 1; i < argc; i++) {
-        if (std::string(argv[i]) == "--parallel") {
-            isParallel = true;
+        if (std::string(argv[i]) == "--energy") {
+            plotEnergy = true;
+            plotMagnetisation = false;
+        }
+        if (std::string(argv[i]) == "--magnetisation") {
+            plotMagnetisation = true;
+            plotEnergy = false;
+        }
+        if (std::string(argv[i]) == "--h") {
+            fieldB = atof(argv[i + 1]);
+        }
+        if (std::string(argv[i]) == "--help") {
+            std::cout << "Instructions are :" << std::endl;
+            std::cout << "--energy  --> Plot the energy" << std::endl;
+            std::cout << "--magnetisation  --> Plot the magnetisation" << std::endl;
+            std::cout << "--h 0.5  --> Select the magnetic field (here 0.5) appliqued on the system" << std::endl;
+            runAppli = false;
         }
     }
 
-    double begin, end;
-    begin = omp_get_wtime();
-
-    int nMC = 100;
-    int nMP = 200;
-    int size = 10;
-    double temperature = 0.1;
-    double fieldB = 0;
     Grid *grid = new Grid(size);
     IsingModel *isingModel = new IsingModel(size, temperature, fieldB);
     MonteCarlo *monteCarlo = new MonteCarlo(nMC, nMP, isingModel, grid);
 
-    double magnetisation = 0;
+    double physicsVar = 0;
     double ic = 0;
 
-    double temperatureMax = 3;
-    int nbStep = 30;
-    double temperatureStep = temperatureMax / nbStep;
-
-    if (!isParallel) {
-        std::vector<double> x, y, icmin, icmax;
+    if (runAppli) {
+        std::vector<double> x, y, icmin, icmax, zero;
         for (int i = 1; i < nbStep; i++) {
             isingModel->setTemperature(i * temperatureStep);
-            monteCarlo->getMagnetisation(magnetisation, ic);
             x.push_back(i * temperatureStep);
-            y.push_back(magnetisation);
-            icmin.push_back(magnetisation - ic);
-            icmax.push_back(magnetisation + ic);
+            if (plotMagnetisation) {
+                monteCarlo->getMagnetisation(physicsVar, ic);
+            } else if (plotEnergy) {
+                monteCarlo->getEnergy(physicsVar, ic);
+            }
+            y.push_back(physicsVar);
+            icmin.push_back(physicsVar - ic);
+            icmax.push_back(physicsVar + ic);
+            zero.push_back(0);
 
             plt::clf();
             plt::plot(x, y);
             plt::plot(x, icmin, "r--");
             plt::plot(x, icmax, "r--");
+            plt::plot(x, zero, "g");
             plt::xlim(0, (int) (temperatureMax));
             plt::xlabel("Temperature (K)");
-            plt::ylabel("Magnetisation");
-            plt::title("M = (T, B)");
+            if (plotMagnetisation) {
+                plt::ylabel("Magnetisation");
+                plt::title("M = (T, B)");
+            } else if (plotEnergy) {
+                plt::ylabel("Energy");
+                plt::title("E = (T, B)");
+            }
 
             plt::pause(0.01);
 
         }
-    } else {
-        omp_set_num_threads(4);
-        std::vector<double> x(nbStep);
-        std::vector<double> y(nbStep);
-        std::vector<double> icmin(nbStep);
-        std::vector<double> icmax(nbStep);
-#pragma omp parallel
-        {
-            Grid gridParallel = Grid(size);
-            IsingModel *isingModelParallel = new IsingModel(size, temperature, 0);
-            MonteCarlo monteCarloParallel = MonteCarlo(nMC, nMP, isingModelParallel, &gridParallel);
-#pragma omp for private (magnetisation, ic)
-            for (int i = 0; i < nbStep; i++) {
-                isingModelParallel->setTemperature((i + 1) * temperatureStep);
-                monteCarloParallel.getMagnetisation(magnetisation, ic);
-                x[i] = (i + 1) * temperatureStep;
-                y[i] = magnetisation;
-                icmin[i] = magnetisation - ic;
-                icmax[i] = magnetisation + ic;
-                cout << "iteration: " << i + 1 << " / " << nbStep << " num threads: " << omp_get_thread_num() << endl;
-            }
-        }
-        plt::plot(x, y);
-        plt::plot(x, icmin, "r--");
-        plt::plot(x, icmax, "r--");
-        plt::xlim(0, (int) (temperatureMax));
-        plt::xlabel("Temperature (K)");
-        plt::ylabel("Magnetisation");
-        plt::title("M = (T, B)");
-    }
-    end = omp_get_wtime();
-    cout << "Real time : " << end - begin << " s" << endl;
 
-    plt::save("./view.png");
-    plt::show();
+        plt::save("./IsingSimulation.png");
+        plt::show();
+    }
 
 }

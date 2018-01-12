@@ -8,8 +8,8 @@ MonteCarlo::MonteCarlo(int nMC, int nMP, IsingModel *model, Grid *g) {
 }
 
 MonteCarlo::~MonteCarlo() {
-  delete isingModel;
-  delete grid;
+    delete isingModel;
+    delete grid;
 }
 
 void MonteCarlo::getMagnetisation(double &magnetisation, double &ic) {
@@ -27,5 +27,23 @@ void MonteCarlo::getMagnetisation(double &magnetisation, double &ic) {
     squareSum /= nbSampleMC;
 
     magnetisation = sum;
+    ic = 1.96 * sqrt(squareSum - sum * sum) / sqrt(nbSampleMC);
+}
+
+void MonteCarlo::getEnergy(double &energy, double &ic) {
+    double sum = 0;
+    double squareSum = 0;
+    double tempoEnergy = 0;
+    for (int i = 0; i < nbSampleMC; i++) {
+        grid->getMatrix()->setAll(1);
+        isingModel->simul(*grid, nbSambleMP);
+        tempoEnergy = grid->getEnergy(isingModel->getMagnetisationField());
+        sum += tempoEnergy;
+        squareSum += tempoEnergy * tempoEnergy;
+    }
+    sum /= nbSampleMC;
+    squareSum /= nbSampleMC;
+
+    energy = sum;
     ic = 1.96 * sqrt(squareSum - sum * sum) / sqrt(nbSampleMC);
 }

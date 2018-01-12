@@ -36,24 +36,13 @@ int main() {
     }
 
     grid.getMatrix()->setAll(1);
-
     isingModel->setTemperature(0.1);
-    for (int i = 0; i<200; i++) {
-        isingModel->simul(grid);
-    }
-
+    isingModel->simul(grid, 200);
     double magnetisation = grid.getMagnetisation();
     if (magnetisation < 0.98) {
-      success = false;
-      cerr << "Error on the expected value (1) and current result: " << magnetisation << " with simul(grid)" << endl;
-    }
-
-     grid.getMatrix()->setAll(1);
-     isingModel->simul(grid, 200);
-     magnetisation = grid.getMagnetisation();
-     if (magnetisation < 0.98) {
-       success = false;
-       cerr << "Error on the expected value (1) and current result: " << magnetisation <<" with simul(grid,n)" << endl;
+        success = false;
+        cerr << "Error on the expected value (1) and current result: " << magnetisation << " with simul(grid,n)"
+             << endl;
     }
 
     if (success) {

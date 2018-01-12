@@ -8,7 +8,9 @@
 
 using namespace std;
 
-/// Need to instance this class as a pointer because this class use std::random_device
+/**
+ * @brief Need to instance this class as a pointer because this class use std::random_device
+ */
 
 class IsingModel {
 
@@ -26,14 +28,7 @@ public:
     void setMagnetisationField(double magnetisationfield);
 
     /**
-     * Simul one iteration and save modification on the grid
-     *
-     * @param grid The current grid
-     */
-    void simul(Grid &grid);
-
-    /**
-     * Simul n iterations and save modification on the grid
+     * @brief Simul n iterations and save modification on the grid
      *
      * @param grid The current grid
      * @param n Number of iterations
@@ -44,7 +39,7 @@ private:
     int size; /// Size of the grid
     double T; /// Temperature
     double B; /// Magnetisation field
-    const double k = 1; //1.38064852 * pow(10, -23); /// Boltzmann constant
+    const double k = 1; /// Boltzmann constant
     Grid tempoGrid; /// TempoGrid used to avoid multiple instances of grid
     random_device rd;
 };

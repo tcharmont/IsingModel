@@ -1,4 +1,7 @@
 #include "IsingModel.hpp"
+#include <iostream>
+
+using namespace std;
 
 IsingModel::IsingModel(int s, double temperature, double MagnetisationField) : tempoGrid(Grid(s)) {
     size = s;
@@ -33,32 +36,22 @@ void IsingModel::setMagnetisationField(double magnetisationfield) {
     B = magnetisationfield;
 }
 
-void IsingModel::simul(Grid &grid) {
+void IsingModel::simul(Grid &grid, int n) {
     mt19937 generator(rd()); /// Mersenne Twister 19937 generator
     uniform_real_distribution<double> distribution(0.0, 1.0);
-    double localEnergy = 0;
+    double deltaEnergy = 0.;
     int currentSpin = 0;
-    double alea = 0;
-    tempoGrid = grid;
-    for (int i = 0; i < size; i++) {
-        for (int j = 0; j < size; j++) {
-            localEnergy = grid.getDeltaEnergy(i, j);// - grid.getTotalSpin() * B;
-            currentSpin = (int) grid.getMatrix()->get(i, j);
-            if (localEnergy < 0) {
-                tempoGrid.getMatrix()->set(i, j, -currentSpin);
-            } else {
+    double alea = 0.;
+    for (int i = 0; i < n; i++) {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                deltaEnergy = grid.getDeltaEnergy(i, j, B);
+                currentSpin = (int) grid.getMatrix()->get(i, j);
                 alea = distribution(generator);
-                if (alea < exp(-localEnergy / (k * T))) {
-                    tempoGrid.getMatrix()->set(i, j, -currentSpin);
+                if (deltaEnergy < 0 || alea < exp(-deltaEnergy / (k * T))) {
+                    grid.getMatrix()->set(i, j, -1 * currentSpin);
                 }
             }
         }
-    }
-    grid = tempoGrid;
-}
-
-void IsingModel::simul(Grid &grid, int n) {
-    for (int i = 0; i < n; i++) {
-        simul(grid);
     }
 }

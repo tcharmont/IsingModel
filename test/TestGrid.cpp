@@ -19,7 +19,7 @@ int main() {
         cerr << "Error on getMagnetisation()" << endl;
     }
 
-    if (abs((int) grid.getDeltaEnergy(0, 0)) > 4) {
+    if ((int) grid.getDeltaEnergy(0, 0, 0) != 0) {
         success = false;
         cerr << "Error on getDeltaEnergy()" << endl;
     }
@@ -29,7 +29,7 @@ int main() {
 
     grid = grid2;
 
-    if (grid != grid2) {
+    if (grid != grid2 && grid.getMatrix()->get(0, 0) != grid2.getMatrix()->get(0, 0)) {
         success = false;
         cerr << "Error on grid2 = grid1 (grid affectation)" << endl;
     } else if (*(grid.getMatrix()) != *(grid2.getMatrix())) {
@@ -37,8 +37,8 @@ int main() {
         cerr << "Error on grid2 = grid1 (matrix affectation)" << endl;
     }
 
-    grid2.getMatrix()->set(0,0,100);
-    if (grid.getMatrix()->get(0,0) == 100) {
+    grid2.getMatrix()->set(0, 0, 100);
+    if (grid.getMatrix()->get(0, 0) == 100) {
         success = false;
         cerr << "Error on the pointer management" << endl;
     }

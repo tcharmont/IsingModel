@@ -6,6 +6,10 @@
 #include <time.h>
 #include <string.h>
 
+/**
+ * @brief Class to manage the matrix
+ */
+
 class Matrix {
 
 public:
@@ -40,10 +44,10 @@ public:
 
 private:
 
-    double *mat;
-    int n; // numbers of rows
-    int m; // numbers of columns
-    int nm; // numbers of rows * columns
+    double *mat; /// Pointer to stock the matrix value
+    int n; /// Numbers of rows
+    int m; /// Numbers of columns
+    int nm; /// Numbers of rows * columns
 
 };
 

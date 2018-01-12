@@ -39,7 +39,7 @@ int main() {
     }
 
     if (matrix != matrix2) {
-      success = false;
+        success = false;
         cerr << "Error on the matrix comparaison (!=)" << endl;
     }
 
@@ -65,8 +65,8 @@ int main() {
         cerr << "Error on the allocation" << endl;
     }
 
-    matrix3.set(0,0,1000);
-    if (matrix.get(0,0) == 1000) {
+    matrix3.set(0, 0, 1000);
+    if (matrix.get(0, 0) == 1000) {
         success = false;
         cerr << "Error on the allocation (pointer)" << endl;
     }

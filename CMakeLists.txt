@@ -23,19 +23,6 @@ set(CMAKE_CTEST_COMMAND ctest -V)
 include(CTest)
 add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND})
 
-# Detect Boost
-set(Boost_NO_BOOST_CMAKE ON)
-find_package(Boost REQUIRED)
-include_directories(${Boost_INCLUDE_DIR})
-message(STATUS "Boost include directory ${Boost_INCLUDE_DIR}")
-
-# Detect OpenMP
-find_package(OpenMP REQUIRED)
-if (OPENMP_FOUND)
-    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-endif()
-
 # Detect Python
 find_package(PythonLibs 2.7 REQUIRED)
 include_directories(${PYTHON_INCLUDE_DIRS})

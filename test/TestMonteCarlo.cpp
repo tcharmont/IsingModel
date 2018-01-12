@@ -18,6 +18,10 @@ int main() {
     double ic = 0;
 
     monteCarlo->getMagnetisation(magnetisation, ic);
+    if (magnetisation < 0.98) {
+        success = false;
+        cerr << "Error on the expected value" << endl;
+    }
 
     if (success) {
         exit(0);
